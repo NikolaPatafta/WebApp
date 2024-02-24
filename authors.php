@@ -69,12 +69,20 @@
                             </td>
                         <?php endif; ?>
                     </tr>
-                <?php endwhile; ?>
+                <?php endwhile; ?>  
             </tbody>
         </table>
-        <div class="col">
-            <a href="index.php" class="btn btn-primary">Back to index</a>
+        <div class="row">
+            <div class="col">
+                <a href="index.php" class="btn btn-primary">Back to index</a>
+            </div>
+        <?php if ($isAdmin) : ?>
+        <div class="col text-end">
+            <a href="addAuthor.php" class="btn btn-primary">Add new Author</a>
         </div>
+    <?php endif; ?>
+    </div>
+</div>
     </div>
 </body>
 </html>
