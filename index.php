@@ -1,8 +1,17 @@
 <?php
-session_start();
-if(!isset($_SESSION["user"])){
-    header("Location: login.php");
-}
+    session_start();
+    if(!isset($_SESSION["user"])){
+        header("Location: login.php");
+    }
+?>
+<?php
+    function displayBook($bookName, $author, $randomText){
+        echo '<div class="book-container">';
+        echo '<h2>' . $bookName . '</h2>';
+        echo '<p>Author: ' . $author . '</p>';
+        echo '<p>' . $randomText . '</p>';
+        echo '</div>';
+    }
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +27,23 @@ if(!isset($_SESSION["user"])){
 <body>
     <div class="container">
         <h1> Welcome to BookApp!</h1>
-        <a href="logout.php" class="btn btn-warning">Logout</a>
+        <div class="row">
+            <div class="col">
+                <input type="submit" value="Create new book" name="newbook" class="btn btn-primary">
+            </div>
+            <div class="col">
+                <a href="authors.php" class="btn btn-primary">View authors</a>
+            </div>
+        </div>
+
+        <?php
+        // Displaying multiple books for testing purposes
+        displayBook("Book 1", "Author 1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+        displayBook("Book 2", "Author 2", "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+        ?>   
+        <div class="form-btn">
+            <a href="logout.php" class="btn btn-warning">Logout</a>
+        </div>
     </div>
 </body>
 </html>

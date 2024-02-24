@@ -1,8 +1,8 @@
 <?php
-session_start();
-if(isset($_SESSION["user"])){
-    header("Location: index.php");
-}
+    session_start();
+    if(isset($_SESSION["user"])){
+        header("Location: index.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -26,9 +26,10 @@ if(isset($_SESSION["user"])){
                 $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
                 if($user){
                     if(password_verify($password, $user["password"])){
-                        header("Location: index.php");
                         session_start();
                         $_SESSION["user"] = "yes";
+                        $_SESSION["is_admin"] = $user["is_admin"];
+                        header("Location: index.php");
                         die();
                     }else{
                         echo "<div class = 'alert alert-danger'>Password does not match.</div>"; 
@@ -38,6 +39,7 @@ if(isset($_SESSION["user"])){
                     echo "<div class = 'alert alert-danger'>Email does not exist.</div>";
                 }
             }
+
         ?>
 
         <form action = "login.php" method = "post">
