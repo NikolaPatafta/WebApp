@@ -74,7 +74,7 @@
         </table>
         <div class="row">
             <div class="col">
-                <a href="index.php" class="btn btn-primary">Back to index</a>
+                <a href="index.php" class="btn btn-info">Back to index</a>
             </div>
         <?php if ($isAdmin) : ?>
         <div class="col text-end">

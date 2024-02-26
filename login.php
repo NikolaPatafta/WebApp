@@ -1,8 +1,46 @@
 <?php
-    session_start();
-    if(isset($_SESSION["user"])){
-        header("Location: index.php");
+session_start();
+if (isset($_SESSION["user"])) {
+    header("Location: index.php");
+}
+
+if (isset($_POST["login"])) {
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+
+    require_once "database.php";
+
+    $sql = "SELECT author_id, password, is_admin FROM authors WHERE email = ?";
+    $stmt = $connect->prepare($sql);
+
+    if ($stmt) {
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($user_id, $hashed_password, $is_admin);
+            $stmt->fetch();
+
+            if (password_verify($password, $hashed_password)) {
+                // Successfully logged in
+                $_SESSION["user"] = $email;
+                $_SESSION["user_id"] = $user_id;
+                $_SESSION["is_admin"] = $is_admin;
+                header("Location: index.php");
+                die();
+            } else {
+                $error_message = "Password does not match.";
+            }
+        } else {
+            $error_message = "Email does not exist.";
+        }
+
+        $stmt->close();
+    } else {
+        $error_message = "Error during prepare: " . $connect->error;
     }
+}
 ?>
 
 <!DOCTYPE html>
@@ -17,31 +55,10 @@
 <body>
     <div class ="container">
         <?php
-            if(isset($_POST["login"])){
-                $email = $_POST["email"];
-                $password = $_POST["password"];
-                require_once "database.php";
-                $sql = "SELECT * FROM authors WHERE email = '$email'";
-                $result = mysqli_query($connect, $sql);
-                $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
-                if($user){
-                    if(password_verify($password, $user["password"])){
-                        session_start();
-                        $_SESSION["user"] = "yes";
-                        $_SESSION["is_admin"] = $user["is_admin"];
-                        header("Location: index.php");
-                        die();
-                    }else{
-                        echo "<div class = 'alert alert-danger'>Password does not match.</div>"; 
-                    }
-                }
-                else{
-                    echo "<div class = 'alert alert-danger'>Email does not exist.</div>";
-                }
+            if (isset($error_message)) {
+                echo "<div class='alert alert-danger'>$error_message</div>";
             }
-
         ?>
-
         <form action = "login.php" method = "post">
             <div class = "form-group">
                 <input type = "email" placeholder = "Enter email:" name ="email" class ="form-control">

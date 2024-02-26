@@ -25,25 +25,30 @@
 
 </head>
 <body>
-    <div class="container">
-        <h1> Welcome to BookApp!</h1>
-        <div class="row">
-            <div class="col">
-                <input type="submit" value="Create new book" name="newbook" class="btn btn-primary">
-            </div>
-            <div class="col">
-                <a href="authors.php" class="btn btn-primary">View authors</a>
-            </div>
+<div class="container">
+    <h1>Welcome to BookApp!</h1>
+    <div class="row mb-3">
+        <div class="col">
+            <a href="addbook.php" class="btn btn-success">Add New Book</a>
         </div>
-
-        <?php
-        // Displaying multiple books for testing purposes
-        displayBook("Book 1", "Author 1", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-        displayBook("Book 2", "Author 2", "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-        ?>   
-        <div class="form-btn">
-            <a href="logout.php" class="btn btn-warning">Logout</a>
+        <div class="col text-center">
+            <a href="viewBooks.php" class="btn btn-warning">Preview Books</a>
+        </div>
+        <div class="col text-end">
+            <a href="authors.php" class="btn btn-info">View Authors</a>
         </div>
     </div>
+
+    <!-- Library Image -->
+    <div class="text-center">
+        <img src="https://s26162.pcdn.co/wp-content/uploads/2021/03/olaser_libraries.jpg" alt="Library" class="img-fluid mb-3" style="max-width: 100%;">
+    </div>
+
+    <!-- Logout Button -->
+    <div class="text-center">
+        <a href="logout.php" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+
 </body>
 </html>
