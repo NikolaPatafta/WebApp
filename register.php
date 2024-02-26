@@ -31,7 +31,6 @@
             else{
                 $is_admin = 0;
             }
-
         
             $passwordhash = password_hash($password, PASSWORD_DEFAULT);
             $errors = array();
@@ -73,7 +72,6 @@
                 else{
                     die("Something went wrong");
                 }
-            
             }
         }
         ?>
@@ -99,8 +97,7 @@
             </div>
             <div class = "form-btn">
                 <input type = "submit" class ="btn btn-primary" value = "Register" name ="submit">
-            </div>
-            
+            </div>           
         </from>
         <div><p><br>Already registred? <a href="login.php">Login here </a></p></div>
     </div>

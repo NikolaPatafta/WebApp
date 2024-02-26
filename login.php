@@ -1,8 +1,10 @@
 <?php
 session_start();
+
 if (isset($_SESSION["user"])) {
     header("Location: index.php");
 }
+$successMessage = isset($_GET['successMessage']) ? urldecode($_GET['successMessage']) : '';
 
 if (isset($_POST["login"])) {
     $email = $_POST["email"];
@@ -23,10 +25,17 @@ if (isset($_POST["login"])) {
             $stmt->fetch();
 
             if (password_verify($password, $hashed_password)) {
-                // Successfully logged in
+                
                 $_SESSION["user"] = $email;
                 $_SESSION["user_id"] = $user_id;
                 $_SESSION["is_admin"] = $is_admin;
+
+                $sqlUpdateLastActive = "UPDATE authors SET last_active = NOW() WHERE author_id = ?";
+                $stmtUpdateLastActive = $connect->prepare($sqlUpdateLastActive);
+                $stmtUpdateLastActive->bind_param("i", $user_id);
+                $stmtUpdateLastActive->execute();
+                $stmtUpdateLastActive->close();
+
                 header("Location: index.php");
                 die();
             } else {
@@ -38,7 +47,7 @@ if (isset($_POST["login"])) {
 
         $stmt->close();
     } else {
-        $error_message = "Error during prepare: " . $connect->error;
+        $error_message = "Error: " . $connect->error;
     }
 }
 ?>
@@ -57,6 +66,9 @@ if (isset($_POST["login"])) {
         <?php
             if (isset($error_message)) {
                 echo "<div class='alert alert-danger'>$error_message</div>";
+            }
+            if (!empty($successMessage)) {
+                echo "<div class='alert alert-success'>$successMessage</div>";
             }
         ?>
         <form action = "login.php" method = "post">

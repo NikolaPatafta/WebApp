@@ -10,8 +10,6 @@ if (!isset($_SESSION["user"])) {
 $isAdmin = isset($_SESSION["is_admin"]) && $_SESSION["is_admin"] == 1;
 $loggedInUserId = isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : null;
 
-
-
 require_once "database.php";
 $sqlAllBooks = "SELECT book_id, headline, text, authors.author_id, authors.name AS author_name, authors.surname AS author_surname FROM book JOIN authors ON book.author_id = authors.author_id";
 
@@ -31,11 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $text = $_POST["text"];
     $author_id = isset($_POST["author_id"]) ? (int)$_POST["author_id"] : 0;
 
-    // Validation
     if (empty($id) || empty($headline) || empty($text) || empty($author_id)) {
         $errorMessage = "All the fields are required";
     } else {
-        // Update the record
         $sql = "UPDATE book SET headline = ?, text = ?, author_id = ? WHERE book_id = ?";
         $stmt = $connect->prepare($sql);
         $stmt->bind_param("ssii", $headline, $text, $author_id, $id);
@@ -45,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errorMessage = "SQL Error: " . $stmt->error;
         } else {
             $successMessage = "Book updated successfully!";
-            header("location: viewBooks.php?successMessage=" . urlencode($successMessage)); // Corrected redirection
+            header("location: viewBooks.php?successMessage=" . urlencode($successMessage));
             exit;
         }
 
@@ -53,13 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Fetch existing data for display
 if (isset($_GET["book_id"])) {
     $id = $_GET["book_id"];
     $sql = "SELECT * FROM book WHERE book_id = $id";
     $result = $connect->query($sql);
 
-    if ($result) { // Check if the query was successful
+    if ($result) { 
         $row = $result->fetch_assoc();
 
         if ($row) {
@@ -105,19 +100,22 @@ if (isset($_GET["book_id"])) {
                         <th>Edit</th>
                         <th>Delete</th>
                     <?php endif; ?>
-                    <th>Preview</th> <!-- Add this line for the new column -->
+                    <th>Preview</th>
                 </tr>
             </thead>
             <tbody>
                 <?php while ($book = mysqli_fetch_array($resultAllBooks, MYSQLI_ASSOC)) : ?>
                     <tr>
                         <td><?php echo $book['headline']; ?></td>
-                        <td><?php echo substr($book['text'], 0, 15) . '...'; ?></td>
+                        <td><?php echo substr($book['text'], 0, 10) . '...'; ?></td>
                         <td><?php echo $book['author_name'] . ' ' . $book['author_surname']; ?></td>
+                        <td>
+                            <a href="previewBooks.php?book_id=<?php echo $book['book_id']; ?>" class="btn btn-success">Preview Book</a>
+                        </td>
                         <?php if ($isAdmin || ($loggedInUserId && $loggedInUserId == $book['author_id'])) : ?>
                             <td>
-                            <a href="editBooks.php?book_id=<?php echo $book['book_id']; ?>&author_id=<?php echo $book['author_id']; ?>" class="btn btn-warning">Edit
-                            </a>
+                                <a href="editBooks.php?book_id=<?php echo $book['book_id']; ?>&author_id=<?php echo $book['author_id']; ?>" class="btn btn-warning">Edit
+                                </a>
                             </td>
                             <td>
                                 <a href="#" onclick="confirmDelete(<?php echo $book['book_id']; ?>)" class="btn btn-danger">Delete</a>
@@ -131,9 +129,7 @@ if (isset($_GET["book_id"])) {
                                 </script>
                             </td>
                         <?php endif; ?>
-                        <td>
-                            <a href="previewBooks.php?book_id=<?php echo $book['book_id']; ?>" class="btn btn-success">Preview Book</a>
-                        </td>
+                        
                     </tr>
                 <?php endwhile; ?>  
             </tbody>

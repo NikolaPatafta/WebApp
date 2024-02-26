@@ -8,14 +8,12 @@ if (!isset($_SESSION["user"])) {
 
 require_once "database.php";
 
-// Retrieve author's details from the database
 $author_id = "";
 $author_name = $author_surname = "";
 
 if (isset($_SESSION["user_id"])) {
     $author_id = $_SESSION["user_id"];
 
-    // Fetch author's details from the database
     $sql = "SELECT name, surname FROM authors WHERE author_id = ?";
     $stmt = $connect->prepare($sql);
 
@@ -31,12 +29,10 @@ if (isset($_SESSION["user_id"])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
-    // Ensure the required fields are set
     if (isset($_POST['headline'], $_POST['text']) && !empty($_POST['headline']) && !empty($_POST['text'])) {
+       
         $headline = $_POST['headline'];
         $text = $_POST['text'];
-
-        // Insert the book information into the database
         $sql = "INSERT INTO book (headline, text, author_id) VALUES (?, ?, ?)";
         $stmt = $connect->prepare($sql);
 
@@ -72,14 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 </head>
 <body>
     <div class="container">
-        <!-- Display Author details -->
         <?php
         if (!empty($author_name) && !empty($author_surname)) {
             echo "<div class='alert alert-info'>Author: $author_name $author_surname</div>";
         }
         ?>
-
-        <!-- Your existing form -->
         <form action="addbook.php" method="post">
             <div class="form-group">
                 <input type="text" class="form-control" name="headline" placeholder="Book's headline:" required>

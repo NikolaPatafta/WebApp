@@ -25,11 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $text = $_POST["text"];
     $author_id = isset($_POST["author_id"]) ? (int)$_POST["author_id"] : 0;
 
-    // Validation
     if (empty($id) || empty($headline) || empty($text) || empty($author_id)) {
         $errorMessage = "All the fields are required";
     } else {
-        // Update the record
         $sql = "UPDATE book SET headline = ?, text = ?, author_id = ? WHERE book_id = ?";
         $stmt = $connect->prepare($sql);
         $stmt->bind_param("ssii", $headline, $text, $author_id, $id);
@@ -42,12 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("location: viewBooks.php?successMessage=" . urlencode($successMessage));
             exit;
         }
-
         $stmt->close();
     }
 }
 
-// Fetch existing data for display
 if (isset($_GET["book_id"])) {
     $id = $_GET["book_id"];
     $author_id = isset($_GET["author_id"]) ? $_GET["author_id"] : null;

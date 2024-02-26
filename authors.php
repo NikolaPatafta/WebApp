@@ -6,6 +6,7 @@
 ?>
 <?php
     $successMessage = isset($_GET['successMessage']) ? urldecode($_GET['successMessage']) : '';
+    $errorMessage = isset($_GET['errorMessage']) ? urldecode($_GET['errorMessage']) : '';
     $isAdmin = isset($_SESSION["is_admin"]) && $_SESSION["is_admin"] == 1;
 
     require_once "database.php";
@@ -30,7 +31,12 @@
 <body>
     <div class="container">
         <?php if (!empty($successMessage)) : ?>
-        <div class="alert alert-success"><?php echo $successMessage; ?></div>
+            <div class="alert alert-success"><?php echo $successMessage; ?>
+            </div>
+        <?php endif; ?>
+        <?php if (!empty($errorMessage)) : ?>
+            <div class="alert alert-danger"><?php echo $errorMessage; ?>
+            </div>
         <?php endif; ?>
         <table class="table">
             <thead>

@@ -23,11 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST["email"];
     $is_admin = isset($_POST["is_admin"]) ? (int)$_POST["is_admin"] : 0;
 
-    // Validation
     if (empty($id) || empty($name) || empty($surname) || empty($email)) {
         $errorMessage = "All the fields are required";
     } else {
-        // Update the record
         $sql = "UPDATE authors SET name = ?, surname = ?, email = ?, is_admin = ? WHERE author_id = ?";
         $stmt = $connect->prepare($sql);
         $stmt->bind_param("sssii", $name, $surname, $email, $is_admin, $id);
@@ -41,12 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             exit;
         }
-
         $stmt->close();
     }
 }
 
-// Fetch existing data for display
 if (isset($_GET["author_id"])) {
     $id = $_GET["author_id"];
     $sql = "SELECT * FROM authors WHERE author_id = $id";

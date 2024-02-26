@@ -35,7 +35,6 @@
                 $is_admin = 0;
             }
 
-        
             $passwordhash = password_hash($password, PASSWORD_DEFAULT);
             $errors = array();
         
@@ -63,8 +62,7 @@
                     echo "<div class='alert alert-danger'>$error</div>";
                 }
             }
-            else{
-                
+            else{       
                 $sql = "INSERT INTO authors (name, surname, email, password, is_admin) VALUES(?, ?, ?, ?, ?)";
                 $stmt = mysqli_stmt_init($connect);
                 $preparestmt = mysqli_stmt_prepare($stmt, $sql);
@@ -76,7 +74,6 @@
                 else{
                     die("Something went wrong");
                 }
-            
             }
         }
         ?>
@@ -107,8 +104,7 @@
                 <div class="col text-end">
                 <a href="authors.php" class="btn btn-primary">Back to Authors</a>
                 </div>
-            </div>
-            
+            </div>      
         </from>
     </div>
 </body>
