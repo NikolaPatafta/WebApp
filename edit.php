@@ -83,7 +83,7 @@ if (isset($_GET["author_id"])) {
                 <input type="text" class="form-control" name="surname" placeholder="surname:" value="<?php echo $surname ?>">
             </div>
             <div class="form-group">
-                <input type="email" class="form-control" name="email" placeholder="email:" value="<?php echo $email ?>">
+                <input type="email" class="form-control" name="email" placeholder="email:" value="<?php echo $email ?>" readonly>
             </div>
             <div class="form-btn">
                 Administrator privileges:

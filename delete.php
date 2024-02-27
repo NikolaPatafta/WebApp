@@ -28,11 +28,16 @@ if (isset($_GET["author_id"])) {
         session_destroy();
         header("Location: login.php?successMessage=Your account has been deleted");
         exit;
+        
+        #***********
+        # Administrator može izbrisati drugi administrator ako je neaktivan neko vrijeme.
+        # Trenutno postavljeno kada je drugi administrator neaktivan vise od 10 minuta. (u svrhe testiranja)
+        #***********
     } elseif ($isAdmin && ($is_admin != 1 || $inactive_minutes > 10)) {
         $sql = "DELETE FROM authors WHERE author_id = $author_id";
         $connect->query($sql);
 
-        header("Location: authors.php?successMessage=User deleted successfully");
+        header("Location: authors.php?successMessage=User deleted successfully.");
         exit;
     } else {
         header("Location: authors.php?errorMessage=You cannot delete this active administrator!");

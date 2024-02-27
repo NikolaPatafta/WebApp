@@ -7,7 +7,6 @@
         $sql = "DELETE FROM book WHERE book_id = $book_id";
         $connect->query($sql);
     }
-
     header("location: viewBooks.php");
     echo "Book deleted successfully.";
     exit;
